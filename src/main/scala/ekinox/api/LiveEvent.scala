@@ -19,7 +19,7 @@ case class LiveEvent (id: Int,
                        )
 
 //class LiveEvents(tag: Tag) extends Table[(Long, Int, Long, Long, Long, String , Long, Long, String, String, Long, Long)](tag, "LIVEEVENT") {
- class LiveEvents(tag: Tag) extends Table[(Int, Int, String)](tag, "LiveEvent") {
+ class LiveEvents(tag: Tag) extends Table[LiveEvent](tag, "LiveEvent") {
 
     def id = column[Int]("id", O.PrimaryKey, O.AutoInc)
     def rencontre_id = column[Int]("rencontre_id")
@@ -34,5 +34,8 @@ case class LiveEvent (id: Int,
 //    def discr = column[String]("discr")
 //    def type_id = column[Long]("type_id")
 //    def pied_id = column[Long]("pied_id")
-   def * = (id, rencontre_id, contenu)
+   def * = (id, rencontre_id, contenu) <> (LiveEvent.tupled, LiveEvent.unapply)
+
+
+
 }

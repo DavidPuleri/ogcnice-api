@@ -1,4 +1,4 @@
-package ekinox.api
+   package ekinox.api
 
 import akka.actor.Actor
 import spray.routing._
@@ -25,39 +25,16 @@ trait LiveService extends HttpService  with DefaultJsonProtocol  with SprayJsonS
 
         get {
             complete {
-//
-//              val events = TableQuery[LiveEvents]
-//
-//              Database.forURL("jdbc:h2:mem:test1", driver = "org.h2.Driver") withSession {
-//                implicit session =>
-//                // <- write queries here
-//                  val q2 = for {
-//                    c <- events
-//                 } yield (c.contenu)
-//
-//              }
-//
-//              val events = TableQuery[LiveEvents]
-//            Database.forName("default") withSession {
-//              implicit session =>
-//              events.length.toString()
-//
-//              LiveEvents.countDistinct
+
               val events = TableQuery[LiveEvents]
               val result = Database.forURL("jdbc:mysql://localhost/ogcnice", user = "root",  driver = "com.mysql.jdbc.Driver") withSession {
                 implicit session =>
 
-                  events foreach { case (id, rencontre_id, contenu) =>
-                        println("  " + id + "\t" + rencontre_id + "\t" + contenu)
-                        LiveEvent(id, rencontre_id, contenu)
-                      }
+              val filterQuery: Query[LiveEvents, LiveEvent] = events.filter(_.rencontre_id === 26)
 
-//                  events.filter(_.rencontre_id === 26).map(_.contenu).foreach( q => print(q) )
+              filterQuery.list
               }
-
-               result
-//             List(LiveEvent(1,2,"contenu"))
-
+              result.toList
             }
 
         }
